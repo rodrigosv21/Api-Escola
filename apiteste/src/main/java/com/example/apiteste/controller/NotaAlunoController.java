@@ -1,0 +1,38 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+
+package com.example.apiteste.controller;
+
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.example.apiteste.model.NotaAlunoEntity;
+import com.example.apiteste.service.NotaAlunoService;
+
+/**
+ *
+ * @author sddro
+ */
+
+@RestController 
+@RequestMapping("/salvarNota")
+public class NotaAlunoController {
+
+    private final NotaAlunoService notaAlunoService;
+
+    public NotaAlunoController(NotaAlunoService notaAlunoService) {
+        this.notaAlunoService = notaAlunoService;
+    }
+
+    @PostMapping("/{id}")
+    public void salvarNotas(@PathVariable Long id , @RequestBody NotaAlunoEntity notaAlunoEntity){
+        notaAlunoService.saveNotas(id, notaAlunoEntity);
+    }
+
+
+}
