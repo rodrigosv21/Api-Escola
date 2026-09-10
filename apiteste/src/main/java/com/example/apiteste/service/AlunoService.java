@@ -16,6 +16,11 @@ import com.example.apiteste.repository.AlunoRepository;
 /**
  *
  * @author sddro
+ * class responsavel por salvar aluno(nome)
+ * -- retorna todos os alunos[
+ * notas, status
+ * ]
+ * buscar aluno por id
  */
 
 @Service
@@ -36,22 +41,12 @@ public class AlunoService {
     }
 
     public List<AlunoEntity> retornaList(){
-        List<AlunoEntity> retornaListaDeAlunos = alunoRepository.findAll();
-        return retornaListaDeAlunos;
+        List<AlunoEntity> alunos= alunoRepository.findAll();
+        return alunos;
     }
 
-    public AlunoEntity buscarUSerPorId(Long id){
-        Optional<AlunoEntity> idAluno = alunoRepository.findById(id);
-
-        AlunoEntity alunoEntity;
-        
-        if(idAluno.isPresent()){
-            alunoEntity = idAluno.get();
-        }else{
-            return null;
-        }
-
-        return alunoEntity;
+    public Optional<AlunoEntity> buscarPorId(Long id){
+        return alunoRepository.findById(id);
     }
 
     

@@ -1,8 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
-
 package com.example.apiteste.service;
 
 import java.util.List;
@@ -19,7 +14,15 @@ import com.example.apiteste.status.AlunoStatus;
 /**
  *
  * @author sddro
+ * class responsavel pela regra de notas onde 
+ * -salva notas
+ * -retorna a nota pelo id
+ * - faz a logica da soma do aluno e atualiza o status do aluno de acordo com a nota
+ * se menor que 6 -> reprovado
+ * se for 6 -> recuperação
+ * se maior ou igual a 7 e menor ou igual a 10 -> aprovado
  */
+
 @Service 
 public class NotaAlunoService {
 
@@ -31,22 +34,35 @@ public class NotaAlunoService {
         this.alunoRepository = alunoRepository;
     }
 
-    public void saveNotas(Long id, NotaAlunoEntity notaAlunoEntity){
+    public Optional<NotaAlunoEntity> saveNotas(Long id, NotaAlunoEntity notaAlunoEntity){
         Optional<AlunoEntity> check = alunoRepository.findById(id);
-
+        
         if(check.isPresent()){
             AlunoEntity aluno = check.get();
             notaAlunoEntity.setAlunoEntity(aluno);
-            notaAlunoRepository.save(notaAlunoEntity);
-        }else{
-            return;
+            return Optional.of(notaAlunoRepository.save(notaAlunoEntity));
         }
+        return Optional.empty();
     }
 
     public List<NotaAlunoEntity> retornaNotasPorId(Long id){
         List<NotaAlunoEntity> byAlunoEntityId = notaAlunoRepository.findByAlunoEntityId(id);
         return byAlunoEntityId;
     }
+
+    public void retornaMediaAluno(Long id){
+        List<NotaAlunoEntity> notas = retornaNotasPorId(id);
+        if (notas.size() < 4) {
+            return; //caso o numero de notas seja menor que 4 nem execulta
+        }
+        Double media = 0.0;
+        for (NotaAlunoEntity nota : notas) {
+            media += nota.getNotas();
+        }
+        media = media / notas.size();
+        atualizarStatus(notas.getLast(), media);
+    }
+
 
     private void atualizarStatus(NotaAlunoEntity notaAlunoEntity, Double media) {
         if(media < 6){
@@ -63,22 +79,6 @@ public class NotaAlunoService {
             aluno.setAlunoStatus(AlunoStatus.APROVADO);
             alunoRepository.save(aluno);
         }
-    }
-
-    public void retornaMediaAluno(Long id){
-        List<NotaAlunoEntity> notaAlunoEntity = retornaNotasPorId(id);
-
-        Double media = 0.0; //valor atualizado a cada giro no lopping
-
-        AlunoEntity aluno;
-
-        for (NotaAlunoEntity notaAluno : notaAlunoEntity) {
-            media = media + notaAluno.getNotas(); // vai somar o utimo valor + o proximo valor da lista
-        }
-
-        media = media / 4; // pegar a soma final e divir pelo total de periodo e retorna a media
-
-        atualizarStatus(notaAlunoEntity.getLast(), media);
     }
 
     

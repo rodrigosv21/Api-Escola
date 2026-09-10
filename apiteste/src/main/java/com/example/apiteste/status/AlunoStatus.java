@@ -15,10 +15,13 @@ public enum AlunoStatus {
     RECUPERACAO("Recuperação"),
     REPROVADO("Reprovado");
 
-    private final String nome;
+    private final String valor;
 
-    AlunoStatus(String nome) {
-        this.nome = nome;
+    public String getValor() {
+        return valor;
     }
 
+    AlunoStatus(String valor) {
+        this.valor = valor;
+    }
 }
