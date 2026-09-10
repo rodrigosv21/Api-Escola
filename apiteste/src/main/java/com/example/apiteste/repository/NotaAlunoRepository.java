@@ -5,6 +5,8 @@
 
 package com.example.apiteste.repository;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.example.apiteste.model.NotaAlunoEntity;
@@ -15,4 +17,5 @@ import com.example.apiteste.model.NotaAlunoEntity;
  */
 public interface NotaAlunoRepository extends JpaRepository<NotaAlunoEntity, Long> {
 
+    List<NotaAlunoEntity> findByAlunoEntityId(Long alunoId);
 }

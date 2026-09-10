@@ -5,6 +5,7 @@
 
 package com.example.apiteste.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
@@ -18,7 +19,6 @@ import com.example.apiteste.repository.NotaAlunoRepository;
  *
  * @author sddro
  */
-//ainda não implementado
 @Service 
 public class NotaAlunoService {
 
@@ -41,5 +41,12 @@ public class NotaAlunoService {
             return;
         }
     }
+
+    public List<NotaAlunoEntity> retornaNotasPorId(Long id){
+        List<NotaAlunoEntity> byAlunoEntityId = notaAlunoRepository.findByAlunoEntityId(id);
+        return byAlunoEntityId;
+    }
+
+    
 
 }

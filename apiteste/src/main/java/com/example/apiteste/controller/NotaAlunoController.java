@@ -5,6 +5,9 @@
 
 package com.example.apiteste.controller;
 
+import java.util.List;
+
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,7 +23,7 @@ import com.example.apiteste.service.NotaAlunoService;
  */
 
 @RestController 
-@RequestMapping("/salvarNota")
+@RequestMapping("/nota")
 public class NotaAlunoController {
 
     private final NotaAlunoService notaAlunoService;
@@ -29,9 +32,15 @@ public class NotaAlunoController {
         this.notaAlunoService = notaAlunoService;
     }
 
-    @PostMapping("/{id}")
+    @PostMapping("/saveNotas/{id}")
     public void salvarNotas(@PathVariable Long id , @RequestBody NotaAlunoEntity notaAlunoEntity){
         notaAlunoService.saveNotas(id, notaAlunoEntity);
+    }
+
+    @GetMapping("/buscarNotas/{id}")
+    public List<NotaAlunoEntity> retornaNotasPorId(@PathVariable Long id){
+        List<NotaAlunoEntity> byAlunoEntityId = notaAlunoService.retornaNotasPorId(id);
+        return byAlunoEntityId;
     }
 
 

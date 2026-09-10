@@ -5,6 +5,9 @@
 
 package com.example.apiteste.service;
 
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.stereotype.Service;
 
 import com.example.apiteste.model.AlunoEntity;
@@ -30,6 +33,25 @@ public class AlunoService {
             return;
         }
         alunoRepository.save(aluno);
+    }
+
+    public List<AlunoEntity> retornaList(){
+        List<AlunoEntity> retornaListaDeAlunos = alunoRepository.findAll();
+        return retornaListaDeAlunos;
+    }
+
+    public AlunoEntity buscarUSerPorId(Long id){
+        Optional<AlunoEntity> idAluno = alunoRepository.findById(id);
+
+        AlunoEntity alunoEntity;
+        
+        if(idAluno.isPresent()){
+            alunoEntity = idAluno.get();
+        }else{
+            return null;
+        }
+
+        return alunoEntity;
     }
 
     

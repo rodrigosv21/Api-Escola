@@ -15,6 +15,6 @@ import com.example.apiteste.model.AlunoEntity;
  */
 public interface AlunoRepository extends JpaRepository<AlunoEntity, Long> {
 
-    
+
     
 }
