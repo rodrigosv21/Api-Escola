@@ -43,5 +43,10 @@ public class NotaAlunoController {
         return byAlunoEntityId;
     }
 
+    @GetMapping("/media/{id}")
+    public void calcularMedia(@PathVariable Long id) {
+    notaAlunoService.retornaMediaAluno(id);
+    }
+
 
 }

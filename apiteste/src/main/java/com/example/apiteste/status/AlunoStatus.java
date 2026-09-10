@@ -10,8 +10,15 @@ package com.example.apiteste.status;
  * @author sddro
  */
 public enum AlunoStatus {
-    PENDENTE,
-    APROVADO,
-    RECUPERACAO,
-    REPROVADO
+    PENDENTE("Pendente"),
+    APROVADO("Aprovado"),
+    RECUPERACAO("Recuperação"),
+    REPROVADO("Reprovado");
+
+    private final String nome;
+
+    AlunoStatus(String nome) {
+        this.nome = nome;
+    }
+
 }

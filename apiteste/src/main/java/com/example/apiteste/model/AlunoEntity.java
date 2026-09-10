@@ -8,6 +8,7 @@ package com.example.apiteste.model;
 import java.util.List;
 
 import com.example.apiteste.status.AlunoStatus;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -28,11 +29,11 @@ public class AlunoEntity {
 
     private String nome;
 
+    @JsonManagedReference
     @OneToMany(mappedBy="alunoEntity")
     private List<NotaAlunoEntity> notaAlunoEntity;
 
     private AlunoStatus alunoStatus;
-
 
     @Override
     public String toString() {
@@ -45,7 +46,7 @@ public class AlunoEntity {
 
     public AlunoEntity(String nome) {
         this.nome = nome;
-        this.alunoStatus = alunoStatus.PENDENTE;
+        this.alunoStatus = AlunoStatus.PENDENTE;
     }
 
     public Long getId() {
@@ -79,5 +80,7 @@ public class AlunoEntity {
     public void setAlunoStatus(AlunoStatus alunoStatus) {
         this.alunoStatus = alunoStatus;
     }
+
+    
 
 }
