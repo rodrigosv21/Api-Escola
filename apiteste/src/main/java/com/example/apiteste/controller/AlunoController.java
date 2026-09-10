@@ -7,6 +7,7 @@ package com.example.apiteste.controller;
 
 import java.util.List;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,10 +21,11 @@ import com.example.apiteste.service.AlunoService;
 /**
  *
  * @author sddro
+ * class que ira receber requisiçoes de alunos
  */
 
 @RestController
-@RequestMapping("/aluno")
+@RequestMapping("/alunos")
 public class AlunoController {
 
     private final AlunoService alunoService;
@@ -32,19 +34,19 @@ public class AlunoController {
         this.alunoService = alunoService;
     }
 
-    @PostMapping("/saveALuno")
+    @PostMapping
     public void salvarAluno(@RequestBody AlunoEntity aluno){
         alunoService.salvarAluno(aluno);
     }
 
-    @GetMapping("/getAll")
+    @GetMapping
     public List<AlunoEntity> retornaList(){
         return alunoService.retornaList();
     }
 
-    @GetMapping("/find/{id}")
-    public AlunoEntity buscarAlunoPorId(@PathVariable Long id){
-        return alunoService.buscarUSerPorId(id);
+    @GetMapping("/{id}")
+    public ResponseEntity<AlunoEntity> buscarAlunoPorId(@PathVariable Long id){
+        return alunoService.buscarPorId(id).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
     }
     
 

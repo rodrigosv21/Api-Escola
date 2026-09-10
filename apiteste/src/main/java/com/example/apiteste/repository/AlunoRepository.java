@@ -13,8 +13,4 @@ import com.example.apiteste.model.AlunoEntity;
  *
  * @author sddro
  */
-public interface AlunoRepository extends JpaRepository<AlunoEntity, Long> {
-
-
-    
-}
+public interface AlunoRepository extends JpaRepository<AlunoEntity, Long> {}
