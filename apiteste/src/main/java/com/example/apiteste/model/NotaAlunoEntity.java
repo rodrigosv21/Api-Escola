@@ -12,11 +12,15 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
+import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  *
  * modelagem de camada das notas
  */
+@Data
 @Entity
 public class NotaAlunoEntity {
 
@@ -38,27 +42,4 @@ public class NotaAlunoEntity {
         this.alunoEntity = alunoEntity;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public Double getNotas() {
-        return notas;
-    }
-
-    public void setNotas(Double notas) {
-        this.notas = notas;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public AlunoEntity getAlunoEntity() {
-        return alunoEntity;
-    }
-
-    public void setAlunoEntity(AlunoEntity alunoEntity) {
-        this.alunoEntity = alunoEntity;
-    }
 }

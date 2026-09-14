@@ -44,8 +44,7 @@ public class NotaAlunoController {
 
     @GetMapping
     public List<NotaAlunoEntity> retornaNotasPorId(@PathVariable Long id){
-        List<NotaAlunoEntity> byAlunoEntityId = notaAlunoService.retornaNotasPorId(id);
-        return byAlunoEntityId;
+        return notaAlunoService.retornaNotasPorId(id);
     }
 
     @PostMapping("/media")
