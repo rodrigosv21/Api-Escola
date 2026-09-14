@@ -10,33 +10,29 @@ import java.util.List;
 import com.example.apiteste.status.AlunoStatus;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
-import jakarta.persistence.*;
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 
 /**
  *
  * camada de modelagem do aluno
  */
-@Data
-@Entity
+@Entity 
 public class AlunoEntity {
 
-    @Setter
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
 
     private String nome;
 
-    @Setter
     @JsonManagedReference
     @OneToMany(mappedBy="alunoEntity")
     private List<NotaAlunoEntity> notaAlunoEntity;
 
-    @Enumerated(EnumType.STRING)
-    @Setter
     private AlunoStatus alunoStatus;
 
     @Override
@@ -53,9 +49,38 @@ public class AlunoEntity {
         this.alunoStatus = AlunoStatus.PENDENTE;
     }
 
-    public String setNome(String nome) {
-        return this.nome = nome;
+    public Long getId() {
+        return id;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public List<NotaAlunoEntity> getNotaAlunoEntity() {
+        return notaAlunoEntity;
+    }
+
+    public void setNotaAlunoEntity(List<NotaAlunoEntity> notaAlunoEntity) {
+        this.notaAlunoEntity = notaAlunoEntity;
+    }
+
+    public AlunoStatus getAlunoStatus() {
+        return alunoStatus;
+    }
+
+    public void setAlunoStatus(AlunoStatus alunoStatus) {
+        this.alunoStatus = alunoStatus;
+    }
+
+    
 
 }
