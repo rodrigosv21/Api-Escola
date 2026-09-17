@@ -1,20 +1,8 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
-
 package com.example.apiteste.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 
 /**
  *
@@ -34,7 +22,9 @@ public class NotaAlunoEntity {
     @ManyToOne
     private AlunoEntity alunoEntity;
 
+    //tentativa caso user não informe passa zerada
     public NotaAlunoEntity() {
+        notas = 0.0;
     }
 
     public NotaAlunoEntity(Double notas, AlunoEntity alunoEntity) {

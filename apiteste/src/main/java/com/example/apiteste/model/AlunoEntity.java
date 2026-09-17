@@ -1,45 +1,35 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
-
 package com.example.apiteste.model;
-
-import java.util.List;
 
 import com.example.apiteste.status.AlunoStatus;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import jakarta.persistence.*;
+import lombok.Data;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import java.util.List;
 
 /**
  *
  * camada de modelagem do aluno
  */
-@Entity 
+@Data
+@Entity
 public class AlunoEntity {
 
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String nome;
 
+    @Column(unique = true, length = 8)
+    private String nMatricula;
+
     @JsonManagedReference
-    @OneToMany(mappedBy="alunoEntity")
+    @OneToMany(mappedBy = "alunoEntity")
     private List<NotaAlunoEntity> notaAlunoEntity;
 
+    @Enumerated(value = EnumType.STRING)
     private AlunoStatus alunoStatus;
-
-    @Override
-    public String toString() {
-        return "AlunoEntity [id=" + id + ", nome=" + nome + ", notaAlunoEntity=" + notaAlunoEntity + ", alunoStatus="
-                + alunoStatus + "]";
-    }
 
     public AlunoEntity() {
     }
@@ -48,39 +38,5 @@ public class AlunoEntity {
         this.nome = nome;
         this.alunoStatus = AlunoStatus.PENDENTE;
     }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    public List<NotaAlunoEntity> getNotaAlunoEntity() {
-        return notaAlunoEntity;
-    }
-
-    public void setNotaAlunoEntity(List<NotaAlunoEntity> notaAlunoEntity) {
-        this.notaAlunoEntity = notaAlunoEntity;
-    }
-
-    public AlunoStatus getAlunoStatus() {
-        return alunoStatus;
-    }
-
-    public void setAlunoStatus(AlunoStatus alunoStatus) {
-        this.alunoStatus = alunoStatus;
-    }
-
-    
 
 }

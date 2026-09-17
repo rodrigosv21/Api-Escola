@@ -1,8 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
-
 package com.example.apiteste.controller;
 
 import java.util.List;
@@ -39,8 +34,7 @@ public class NotaAlunoController {
 
     @GetMapping("/buscarNotas/{id}")
     public List<NotaAlunoEntity> retornaNotasPorId(@PathVariable Long id){
-        List<NotaAlunoEntity> byAlunoEntityId = notaAlunoService.retornaNotasPorId(id);
-        return byAlunoEntityId;
+        return notaAlunoService.retornaNotasPorId(id);
     }
 
     @GetMapping("/media/{id}")

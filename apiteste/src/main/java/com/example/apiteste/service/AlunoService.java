@@ -8,6 +8,7 @@ package com.example.apiteste.service;
 import java.util.List;
 import java.util.Optional;
 
+import com.example.apiteste.exception.ExceptionValidation;
 import org.springframework.stereotype.Service;
 
 import com.example.apiteste.model.AlunoEntity;
@@ -33,22 +34,20 @@ public class AlunoService {
     }
 
     //metodo de salvar Aluno
-    public void salvarAluno(AlunoEntity aluno){
-        if(aluno.getNome() == null){
-            return;
+    public void salvarAluno(AlunoEntity aluno) {
+        if (aluno.getNome().isBlank()) {
+            throw new ExceptionValidation("Digite um nome valido");
         }
         alunoRepository.save(aluno);
     }
 
-    public List<AlunoEntity> retornaList(){
-        List<AlunoEntity> alunos= alunoRepository.findAll();
-        return alunos;
+    public List<AlunoEntity> retornaList() {
+        return alunoRepository.findAll();
     }
 
-    public Optional<AlunoEntity> buscarPorId(Long id){
+    public Optional<AlunoEntity> buscarPorId(Long id) {
         return alunoRepository.findById(id);
     }
 
-    
 
 }
