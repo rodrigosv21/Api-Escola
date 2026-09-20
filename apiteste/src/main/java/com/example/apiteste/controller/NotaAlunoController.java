@@ -1,16 +1,13 @@
 package com.example.apiteste.controller;
 
-import java.util.List;
-
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import com.example.apiteste.model.NotaAlunoEntity;
+import com.example.apiteste.DTO.NotaAlunoRequestDTO;
+import com.example.apiteste.DTO.NotaAlunoResponseDTO;
 import com.example.apiteste.service.NotaAlunoService;
+import jakarta.validation.Valid;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  *
@@ -28,18 +25,18 @@ public class NotaAlunoController {
     }
 
     @PostMapping("/saveNotas/{id}")
-    public void salvarNotas(@PathVariable Long id , @RequestBody NotaAlunoEntity notaAlunoEntity){
-        notaAlunoService.saveNotas(id, notaAlunoEntity);
+    public void salvarNotas(@PathVariable Long id, @Valid @RequestBody NotaAlunoRequestDTO notaAl){
+        notaAlunoService.saveNotas(id, notaAl);
     }
 
     @GetMapping("/buscarNotas/{id}")
-    public List<NotaAlunoEntity> retornaNotasPorId(@PathVariable Long id){
-        return notaAlunoService.retornaNotasPorId(id);
+    public ResponseEntity<List<NotaAlunoResponseDTO>> retornaNotasPorId(@PathVariable Long id){
+        return ResponseEntity.ok(notaAlunoService.retornaNotasPorId(id));
     }
 
     @GetMapping("/media/{id}")
     public void calcularMedia(@PathVariable Long id) {
-    notaAlunoService.retornaMediaAluno(id);
+        notaAlunoService.retornaMediaAluno(id);
     }
 
 

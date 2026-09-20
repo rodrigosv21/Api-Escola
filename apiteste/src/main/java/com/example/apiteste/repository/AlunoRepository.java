@@ -9,8 +9,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.example.apiteste.model.AlunoEntity;
 
+import java.util.Optional;
+
 /**
  *
  * @author sddro
  */
-public interface AlunoRepository extends JpaRepository<AlunoEntity, Long> {}
+public interface AlunoRepository extends JpaRepository<AlunoEntity, Long> {
+}

@@ -1,5 +1,7 @@
 package com.example.apiteste.service;
 
+import com.example.apiteste.DTO.NotaAlunoRequestDTO;
+import com.example.apiteste.DTO.NotaAlunoResponseDTO;
 import com.example.apiteste.exception.ExceptionValidation;
 import com.example.apiteste.model.AlunoEntity;
 import com.example.apiteste.model.NotaAlunoEntity;
@@ -16,7 +18,7 @@ import java.util.Optional;
  *
  * @author sddro
  */
-@Service 
+@Service
 public class NotaAlunoService {
 
     private final NotaAlunoRepository notaAlunoRepository;
@@ -29,56 +31,62 @@ public class NotaAlunoService {
         this.notasValidation = notasValidation;
     }
 
-    public void saveNotas(Long id, NotaAlunoEntity notaAlunoEntity){
+    public NotaAlunoResponseDTO saveNotas(Long id, NotaAlunoRequestDTO notaAl) {
         Optional<AlunoEntity> check = alunoRepository.findById(id); //idependente ja traz se tem ou não se tiver vai pra proxima linha
-        AlunoEntity aluno = check.orElseThrow(() -> new ExceptionValidation("Aluno não existe")); //se tiver pegar o valor ou retona uma exception
+        AlunoEntity aluno = check.orElseThrow(() -> new ExceptionValidation("Aluno não existe")); //se tiver pega o valor ou retona uma exception
+
         // ao salvar a nota tem que verificar se ja ultrpassou as 4
         notasValidation.validarNotas(aluno);
 
-        notaAlunoEntity.setAlunoEntity(aluno);
-        notaAlunoRepository.save(notaAlunoEntity);
+        NotaAlunoEntity notaAluno = new NotaAlunoEntity();
+
+        notaAluno.setNota(notaAl.getNota());
+        notaAluno.setAlunoEntity(aluno);
+
+        notaAlunoRepository.save(notaAluno);
+
+        return new NotaAlunoResponseDTO(notaAluno.getNota(), notaAluno.getAlunoEntity().getNome());
     }
 
-    public List<NotaAlunoEntity> retornaNotasPorId(Long id){
-        return notaAlunoRepository.findByAlunoEntityId(id);
+    public List<NotaAlunoResponseDTO> retornaNotasPorId(Long id) {
+        List<NotaAlunoEntity> byAlunoEntityId = notaAlunoRepository.findByAlunoEntityId(id);
+        return byAlunoEntityId.stream().map(NotaAlunoResponseDTO::from).toList();
     }
 
-    private void atualizarStatus(NotaAlunoEntity notaAlunoEntity, Double media) {
-        if(media < 6){
-            AlunoEntity aluno = notaAlunoEntity.getAlunoEntity();
+    private void atualizarStatus(Long alunoId, Double media) {
+        AlunoEntity aluno = alunoRepository.findById(alunoId)
+                .orElseThrow(() -> new ExceptionValidation("Aluno não existe"));
+
+        if (media < 6) {
             aluno.setAlunoStatus(AlunoStatus.REPROVADO);
-            alunoRepository.save(aluno);
-        }else if (media >= 6 && media < 7) {
-            AlunoEntity aluno = notaAlunoEntity.getAlunoEntity();
+        } else if (media >= 6 && media < 7) {
             aluno.setAlunoStatus(AlunoStatus.RECUPERACAO);
-            alunoRepository.save(aluno);
-        }
-        else if(media >= 7 && media <= 10){
-            AlunoEntity aluno = notaAlunoEntity.getAlunoEntity();
+        } else if (media >= 7 && media <= 10) {
             aluno.setAlunoStatus(AlunoStatus.APROVADO);
-            alunoRepository.save(aluno);
         }
+        alunoRepository.save(aluno);
     }
 
-    public void retornaMediaAluno(Long id){
-        List<NotaAlunoEntity> notaAlunoEntity = retornaNotasPorId(id);
+    public void retornaMediaAluno(Long id) {
+        Optional<NotaAlunoEntity> byId = notaAlunoRepository.findById(id);
+        NotaAlunoEntity notaAluno = byId.orElseThrow(() -> new ExceptionValidation("Nota não existe"));
 
-        notasValidation.validarNotas(notaAlunoEntity);
+        Long alunoId = notaAluno.getAlunoEntity().getId();
 
-        double media = 0.0; //valor atualizado a cada giro no lopping
+        List<NotaAlunoResponseDTO> notaAlunoResponseDTOS = retornaNotasPorId(alunoId);
 
-        for (NotaAlunoEntity notaAluno : notaAlunoEntity) {
-
-            media = media + notaAluno.getNotas(); // vai somar o utimo valor + o proximo valor da lista
+        if (notaAlunoResponseDTOS.size() <= 4) {
+            throw new ExceptionValidation("o aluno precisa ter exatamente 4 notas para calcular a média");
         }
 
-        media = media / 4; // pegar a soma final e divir pelo total de periodo e retorna a media
+        double media = 0.0;
 
-        atualizarStatus(notaAlunoEntity.getLast(), media);
+        for (NotaAlunoResponseDTO notaAluno2 : notaAlunoResponseDTOS) {
+            media = media + notaAluno2.getNota();
+        }
+
+        media = media / 4;
+
+        atualizarStatus(alunoId, media);
     }
-
-    
-
-    
-
 }

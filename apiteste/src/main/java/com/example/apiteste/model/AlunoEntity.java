@@ -3,7 +3,10 @@ package com.example.apiteste.model;
 import com.example.apiteste.status.AlunoStatus;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
+import lombok.NonNull;
 
 import java.util.List;
 
@@ -19,10 +22,11 @@ public class AlunoEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotNull
     private String nome;
 
-    @Column(unique = true, length = 8)
-    private String nMatricula;
+    @NotNull
+    private Integer serie;
 
     @JsonManagedReference
     @OneToMany(mappedBy = "alunoEntity")
@@ -36,7 +40,6 @@ public class AlunoEntity {
 
     public AlunoEntity(String nome) {
         this.nome = nome;
-        this.alunoStatus = AlunoStatus.PENDENTE;
     }
 
 }

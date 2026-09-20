@@ -12,14 +12,8 @@ public class NotasValidation {
 
 
     public void validarNotas(AlunoEntity alunoEntity){
-        if (alunoEntity.getNotaAlunoEntity().size() == 4){
-            throw new ExceptionValidation("os 4 campos da media ja foram cadastrado");
-        }
-    }
-
-    public void validarNotas(List<NotaAlunoEntity> notaAluno){
-        if (notaAluno.isEmpty()){
-            throw new ExceptionValidation("Usuario sem notas lançadas");
+        if (alunoEntity.getNotaAlunoEntity().size() >= 4) {
+            throw new ExceptionValidation("MInimo de notas cadastradas");
         }
     }
 

@@ -5,18 +5,13 @@
 
 package com.example.apiteste.controller;
 
-import java.util.List;
-
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import com.example.apiteste.model.AlunoEntity;
+import com.example.apiteste.DTO.AlunoRequestDTO;
+import com.example.apiteste.DTO.AlunoResponseDTO;
 import com.example.apiteste.service.AlunoService;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  *
@@ -35,18 +30,18 @@ public class AlunoController {
     }
 
     @PostMapping
-    public void salvarAluno(@RequestBody AlunoEntity aluno){
-        alunoService.salvarAluno(aluno);
+    public ResponseEntity<AlunoResponseDTO> salvarAluno(@RequestBody AlunoRequestDTO aluno){
+        return ResponseEntity.ok(alunoService.salvarAl(aluno));
     }
 
     @GetMapping
-    public List<AlunoEntity> retornaList(){
-        return alunoService.retornaList();
+    public ResponseEntity<List<AlunoResponseDTO>> retornaList(){
+        return ResponseEntity.ok(alunoService.retornaList());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<AlunoEntity> buscarAlunoPorId(@PathVariable Long id){
-        return alunoService.buscarPorId(id).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
+    public ResponseEntity<AlunoResponseDTO> buscarAlunoPorId(@PathVariable Long id){
+        return ResponseEntity.ok(alunoService.buscarPorId(id));
     }
     
 

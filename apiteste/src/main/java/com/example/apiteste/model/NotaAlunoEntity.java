@@ -2,6 +2,8 @@ package com.example.apiteste.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import lombok.Data;
 
 /**
@@ -16,19 +18,20 @@ public class NotaAlunoEntity {
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
 
-    private Double notas;
+    @Max(value = 10, message = "valor maximo ")
+    @Min(value = 0, message = "menor nota")
+    private Double nota;
 
     @JsonBackReference
     @ManyToOne
     private AlunoEntity alunoEntity;
 
-    //tentativa caso user não informe passa zerada
+
     public NotaAlunoEntity() {
-        notas = 0.0;
     }
 
     public NotaAlunoEntity(Double notas, AlunoEntity alunoEntity) {
-        this.notas = notas;
+        this.nota = notas;
         this.alunoEntity = alunoEntity;
     }
 

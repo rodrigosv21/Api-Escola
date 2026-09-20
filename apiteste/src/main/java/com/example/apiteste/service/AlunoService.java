@@ -5,14 +5,17 @@
 
 package com.example.apiteste.service;
 
-import java.util.List;
-import java.util.Optional;
-
+import com.example.apiteste.DTO.AlunoRequestDTO;
+import com.example.apiteste.DTO.AlunoResponseDTO;
 import com.example.apiteste.exception.ExceptionValidation;
-import org.springframework.stereotype.Service;
-
 import com.example.apiteste.model.AlunoEntity;
 import com.example.apiteste.repository.AlunoRepository;
+import com.example.apiteste.status.AlunoStatus;
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 /**
  *
@@ -33,21 +36,36 @@ public class AlunoService {
         this.alunoRepository = alunoRepository;
     }
 
-    //metodo de salvar Aluno
-    public void salvarAluno(AlunoEntity aluno) {
-        if (aluno.getNome().isBlank()) {
-            throw new ExceptionValidation("Digite um nome valido");
+    public AlunoResponseDTO salvarAl(AlunoRequestDTO al) {
+
+        //check validar de nenhum campo null
+        if (al.getNome() == null || al.getNome().isBlank() || al.getSerie() == null) {
+            throw new ExceptionValidation("Digite campos nome e serie");
         }
-        alunoRepository.save(aluno);
+
+        //criar aluno
+        AlunoEntity alunoEntity = new AlunoEntity();
+
+        //settagem
+        alunoEntity.setNome(al.getNome());
+        alunoEntity.setSerie(al.getSerie());
+        alunoEntity.setAlunoStatus(AlunoStatus.PENDENTE);
+        alunoEntity.setNotaAlunoEntity(new ArrayList<>());
+
+        //salvo
+        alunoRepository.save(alunoEntity);
+
+        return AlunoResponseDTO.from(alunoEntity);
+
     }
 
-    public List<AlunoEntity> retornaList() {
-        return alunoRepository.findAll();
+    public List<AlunoResponseDTO> retornaList() {
+        List<AlunoEntity> all = alunoRepository.findAll();
+        return all.stream().map(AlunoResponseDTO::from).toList();
     }
 
-    public Optional<AlunoEntity> buscarPorId(Long id) {
-        return alunoRepository.findById(id);
+    public AlunoResponseDTO buscarPorId(Long id) {
+        Optional<AlunoEntity> byId = alunoRepository.findById(id);
+        return byId.map(AlunoResponseDTO::from).orElseThrow(() -> new ExceptionValidation("Aluno não existe"));
     }
-
-
 }

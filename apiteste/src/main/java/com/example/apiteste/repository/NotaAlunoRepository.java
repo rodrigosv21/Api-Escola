@@ -16,5 +16,6 @@ import com.example.apiteste.model.NotaAlunoEntity;
  * @author sddro
  */
 public interface NotaAlunoRepository extends JpaRepository<NotaAlunoEntity, Long> {
+    // 
     List<NotaAlunoEntity> findByAlunoEntityId(Long alunoId);
 }
